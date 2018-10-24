@@ -1,0 +1,5 @@
+{
+	"protocol":"https",
+	"host":"api-demo.fxcm.com",
+	"port":443
+}
