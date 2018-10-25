@@ -13,7 +13,7 @@ setup(
 	download_url = 'https://github.com/fxcm-pguz/fxcmrest-py',
 	keywords = 'FXCM REST API Wrapper Finance Algo Trading',
 	install_requires = ['socketIO_client', 'requests'],
-	python_requires '>=3.4',
+	python_requires = '>=3.4',
 	include_package_data = True,
 	package_data = {
 		'': ['*.json']
