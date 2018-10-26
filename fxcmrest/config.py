@@ -1,12 +1,24 @@
+import os.path
 import json
+import pkg_resources
 
 class Config():
 	config = {}
 	
 	def __init__(self, file="", protocol=None, host=None, port=None, token=None, agent=None):
 		if(file):
-			with open(file, 'r') as f:
-				self.config = json.load(f)
+			if(os.path.isfile(file)):
+				with open(file, 'r') as f:
+					self.config = json.load(f)
+			else:
+				f = file
+				if(not f.endswith(".json")):
+					f += ".json"
+				if(pkg_resources.resource_exists(__name__, f)):
+					data = pkg_resources.resource_string(__name__, f)
+					self.config = json.loads(data)
+				else:
+					raise Exception("Config file not found: " + file)
 		if(protocol):
 			self.config['protocol'] = protocol
 		if(host):
