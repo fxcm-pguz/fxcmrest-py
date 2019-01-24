@@ -6,25 +6,22 @@ import json
 import logging
 
 class FXCMRest():
-	config = None
-	socket = None
-	thread = None
-	state = "disconnected"
-	bearer = ""
-	socketReadyEvent = threading.Event()
-	
-	headers = {
-		'User-Agent': 'request',
-		'Accept': 'application/json',
-		'Content-Type': 'application/x-www-form-urlencoded',
-		'Accept-Encoding' : 'identity'
-	}
-	
 	def __init__(self, config):
 		if not isinstance(config, Config):
 			raise ValueError("config must be an object of Config class")
 		else:
 			self.config = config
+			self.socket = None
+			self.thread = None
+			self.state = "disconnected"
+			self.bearer = ""
+			self.socketReadyEvent = threading.Event()
+			self.headers = {
+				'User-Agent': 'request',
+				'Accept': 'application/json',
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Accept-Encoding' : 'identity'
+			}
 	
 	def url(self):
 		return "{0}://{1}:{2}".format(
