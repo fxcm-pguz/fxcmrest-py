@@ -1,9 +1,4 @@
 from .fxcmrest import FXCMRest
 from .config import Config
-from pkg_resources import get_distribution, DistributionNotFound
-try:
-	__version__ = get_distribution(__name__).version
-except DistributionNotFound:
-	# package is not installed
-	__version__ = 'package is not installed'
-	pass
+from setuptools_scm import get_version
+__version__ = get_version()
