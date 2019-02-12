@@ -16,6 +16,8 @@ class Config():
 					f += ".json"
 				if(pkg_resources.resource_exists(__name__, f)):
 					data = pkg_resources.resource_string(__name__, f)
+						if isinstance(data, bytes):
+							data = data.decode('utf-8')
 					self.config = json.loads(data)
 				else:
 					raise Exception("Config file not found: " + file)
