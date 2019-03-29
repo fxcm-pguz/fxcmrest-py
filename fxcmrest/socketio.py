@@ -3,28 +3,8 @@ import json
 import threading
 from ws4py.client.threadedclient import WebSocketClient
 from .config import Config
+from .state import State
 
-class WebSocket(WebSocketClient):
-	def __init__(this, url, opened = None, closed = None,
-		received_message = None, unhandled_error = None):
-		super().__init__(url)
-		if opened:
-			this.opened = opened
-		if closed:
-			this.closed = closed
-		if received_message:
-			this.received_message = received_message
-		if unhandled_error:
-			this.unhandled_error = unhandled_error
-	
-	@property
-	def handshake_headers(this):
-		headers = WebSocketClient.handshake_headers.fget(this)
-		headers = [
-			(header, this.host) if header == 'Host' else (header, value)
-			for (header, value) in headers
-		]
-		return headers
 
 class SocketIO:
 	def __init__(this, config, on_connected = None, on_message = None,
@@ -107,17 +87,17 @@ class SocketIO_Private:
 	def connect(this):
 		this.connecting = True
 		resp = requests.request('GET',
-			"{0}://{1}:{2}/socket.io/?EIO=3&transport=polling&access_token={3}"
+			"{0}://{1}:{2}/socket.io/?EIO=3&transport=polling&access_token={3}&agent={4}"
 			.format(this.config.protocol(),this.config.host(),
-			this.config.port(),this.config.token())).text
+			this.config.port(),this.config.token())).text,this.config.agent()
 		loc1 = resp.find("{")
 		loc2 = resp.rfind("}")
 		this.socketOpt = json.loads(resp[loc1:loc2+1])
 		wsProtocol = 'ws' if this.config.protocol() == 'http' else 'wss'
 		wsURL = "{0}://{1}:{2}/socket.io/?EUO=3&transport=websocket&\
-			sid={3}&access_token={4}".format(
+			sid={3}&access_token={4}&agent={5}".format(
 			wsProtocol,this.config.host(),this.config.port(),
-			this.socketOpt.get('sid'),this.config.token())
+			this.socketOpt.get('sid'),this.config.token()),this.config.agent()
 		this.ws = WebSocket(wsURL,this.ws_opened,this.ws_closed,
 			this.ws_message,this.ws_unhandled_error)
 		this.ws.connect()
@@ -131,6 +111,28 @@ class SocketIO_Private:
 	
 	def ping(this):
 		this.ws.send("2")
+
+class WebSocket(WebSocketClient):
+	def __init__(this, url, opened = None, closed = None,
+		received_message = None, unhandled_error = None):
+		super().__init__(url)
+		if opened:
+			this.opened = opened
+		if closed:
+			this.closed = closed
+		if received_message:
+			this.received_message = received_message
+		if unhandled_error:
+			this.unhandled_error = unhandled_error
+	
+	@property
+	def handshake_headers(this):
+		headers = WebSocketClient.handshake_headers.fget(this)
+		headers = [
+			(header, this.host) if header == 'Host' else (header, value)
+			for (header, value) in headers
+		]
+		return headers
 
 class RepeatTimer:
 	def __init__(this,t,function):
