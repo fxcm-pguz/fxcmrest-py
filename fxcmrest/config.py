@@ -56,3 +56,4 @@ class Config():
 	
 	def agent(self):
 		return self.config['agent']
+
