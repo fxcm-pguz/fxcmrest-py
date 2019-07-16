@@ -81,7 +81,9 @@ class SocketIO_Private:
 				elif(m[1] == this.SIO.CONNECT):
 					this.connected_callback()
 				elif(m[1] == this.SIO.ERROR):
-					this.error_callback(-1,m[2:])
+					this.error_callback(4009,m[2:])
+				else:
+					this.error_callback(4008,"Got unknown SocketIO packet: {0}".format(m[1]))
 			elif(m[0] == this.EIO.PONG):
 				this.pinger.pong()
 				pass
@@ -91,6 +93,8 @@ class SocketIO_Private:
 					this.start_ping()
 				except json._implecoder.JSONDecodeError as e:
 					this.error_callback(4000,"Error decoding socket options: {0}".format(e))
+			else:
+				this.error_callback(4007,"Got unknown EngineIO packet: {0}".format(m[0]))
 	
 	def ws_unhandled_error(this, error):
 		this.error_callback(4002,"Websocket library reports unhandled error: {0}".format(error))
