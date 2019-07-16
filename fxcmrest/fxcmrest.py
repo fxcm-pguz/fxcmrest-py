@@ -52,8 +52,8 @@ class FXCMRest():
 		logging.info("disconnected: {0} {1}".format(code, reason))
 		self.state = "disconnected: {0} {1}".format(code, reason)
 	
-	def onMessage(self, message=''):
-		logging.info("message: {0}".format(message))
+	def onMessage(self, event, message=''):
+		logging.info("message: {0}:{1}".format(event,message))
 	
 	def connect(self):
 		logging.info("connect()")
