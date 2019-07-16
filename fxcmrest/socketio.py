@@ -13,13 +13,13 @@ class SocketIO:
 		this._impl = SocketIO_Private(config, on_connected, on_message, on_closed, on_error)
 	
 	def on_connected(this, on_connected):
-		this._impl.connected = on_connected
+		this._impl.connected_callback = on_connected
 	
 	def on_message(this, on_message):
-		this._impl.message = on_message
+		this._impl.message_callback = on_message
 	
 	def on_closed(this, on_closed):
-		this._impl.closed = on_closed
+		this._impl.closed_callback = on_closed
 	
 	def on_error(this, on_error):
 		this._impl.error_callback = on_error
