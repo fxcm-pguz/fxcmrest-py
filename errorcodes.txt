@@ -101,3 +101,6 @@
 
 4009
 	SocketIO sent error packet.
+
+4010
+	SocketIO got disconnect packet.

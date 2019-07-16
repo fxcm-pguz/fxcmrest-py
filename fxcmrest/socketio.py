@@ -82,6 +82,9 @@ class SocketIO_Private:
 					this.connected_callback()
 				elif(m[1] == this.SIO.ERROR):
 					this.error_callback(4009,m[2:])
+				elif(m[1] == this.SIO.DISCONNECT):
+					this.error_callback(4010,"SocketIO got disconnect packet.")
+					this.disconnect()
 				else:
 					this.error_callback(4008,"Got unknown SocketIO packet: {0}".format(m[1]))
 			elif(m[0] == this.EIO.PONG):
