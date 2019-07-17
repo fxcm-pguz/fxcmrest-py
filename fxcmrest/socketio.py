@@ -147,7 +147,7 @@ class SocketIO_Private:
 	
 	def pongTimeout(this):
 		this.error_callback(4006,"Server did not respond to ping. disconnecting")
-		this._implisconnect()
+		this.disconnect()
 	
 	class WebSocket(WebSocketClient):
 		def __init__(this, url, opened = None, closed = None,
